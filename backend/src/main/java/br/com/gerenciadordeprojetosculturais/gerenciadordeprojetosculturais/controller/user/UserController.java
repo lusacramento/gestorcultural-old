@@ -5,6 +5,7 @@ import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.mode
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,20 +25,10 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public User findById(@PathVariable("id") String id){
-        System.out.println("id: " + id);
-        List<User> userList = new ArrayList<User>();
-        List<Access> accessList = new ArrayList<Access>();
-        User user = new User("098765", "artur@321.com", "345678", false,  accessList);
-        userList.add(user);
-        for (User user1: userList
-             ) {
-            if (user1.getId()==id){
-                user = user1;
-
-            }
-        }
-        return user;
+    public ResponseEntity<User> findById(@PathVariable("id") String id){
+        return this.userService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
