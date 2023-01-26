@@ -53,12 +53,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean findByIdAndRemove(String id) {
-        try {
-                    this.userRepository.deleteById(id);
-                    return true;
-        } catch (Exception ex){
-            return false;
-        }
+    public void findByIdAndRemove(String id) {
+            if(!this.exists(id))
+                throw new NotFoundException("Usuário não encontrado!");
+            this.userRepository.deleteById(id);
+
     }
 }
