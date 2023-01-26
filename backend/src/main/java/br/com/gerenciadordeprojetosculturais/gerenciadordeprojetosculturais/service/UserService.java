@@ -13,5 +13,5 @@ public interface UserService {
     boolean exists(String id);
     User save(User user);
     User findByIdAndUpdate(User user);
-    boolean findByIdAndRemove(String id);
+    void findByIdAndRemove(String id);
 }
