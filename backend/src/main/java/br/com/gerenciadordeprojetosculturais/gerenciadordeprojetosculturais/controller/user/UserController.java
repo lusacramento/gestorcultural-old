@@ -38,9 +38,11 @@ public class UserController {
         return this.userService.save(user);
     }
 
-    @PutMapping
-    public User findByIdAndUpdate(@RequestBody User user){
-        return user;
+    @PutMapping("/{id}")
+    public ResponseEntity<User> findByIdAndUpdate(@PathVariable String id, @RequestBody User user){
+        user.setId(id);
+        this.userService.findByIdAndUpdate(user);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
