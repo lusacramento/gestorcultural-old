@@ -2,6 +2,8 @@ package br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.con
 
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.model.entity.user.User;
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.model.entity.user.access.Access;
+import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +14,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/usuarios")
 public class UserController {
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     public List<User> findAll(){
         List<User> userList = new ArrayList<User>();
         List<Access> accessList = new ArrayList<Access>();
         userList.add(new User("123456", "joao@123.com", "654321", false,  accessList));
-        return userList;
+        return userService.findAll();
     }
 
     @GetMapping(value = "/{id}")
@@ -40,7 +46,8 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User save(@RequestBody User user){
-        return user;
+        System.out.println("bang");
+        return this.userService.save(user);
     }
 
     @PutMapping
