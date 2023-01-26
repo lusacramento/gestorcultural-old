@@ -46,7 +46,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public boolean findByIdAndRemove(@PathVariable("id") String id){
-        return true;
+    public ResponseEntity<Void> findByIdAndRemove(@PathVariable("id") String id){
+       this.userService.findByIdAndRemove(id);
+       return ResponseEntity.noContent().build();
     }
 }
