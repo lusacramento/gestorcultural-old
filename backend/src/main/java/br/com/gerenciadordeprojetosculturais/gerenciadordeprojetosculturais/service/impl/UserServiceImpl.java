@@ -4,10 +4,13 @@ import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.mode
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.repository.UserRepository;
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService {
     
     @Autowired
@@ -34,11 +37,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User save(User user) {
         return this.userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public User findByIdAndUpdate(User user) {
         if(this.userRepository.existsById(user.getId()))
         return this.userRepository.save(user);
@@ -46,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean findByIdAndRemove(String id) {
         try {
                     this.userRepository.deleteById(id);
