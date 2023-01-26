@@ -1,5 +1,6 @@
 package br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.service.impl;
 
+import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.exception.NotFoundException;
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.model.entity.user.User;
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.repository.UserRepository;
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.service.UserService;
@@ -45,9 +46,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User findByIdAndUpdate(User user) {
-        if(this.userRepository.existsById(user.getId()))
+        if(!this.userRepository.existsById(user.getId()))
+            throw new NotFoundException("Usuário não encontrado!");
         return this.userRepository.save(user);
-        return null;
     }
 
     @Override
