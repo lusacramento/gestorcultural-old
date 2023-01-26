@@ -1,4 +1,4 @@
-package br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.model.entity;
+package br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.model.entity.user.access.acessType;
 
 import lombok.Getter;
 
