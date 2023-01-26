@@ -20,10 +20,7 @@ public class UserController {
 
     @GetMapping
     public List<User> findAll(){
-        List<User> userList = new ArrayList<User>();
-        List<Access> accessList = new ArrayList<Access>();
-        userList.add(new User("123456", "joao@123.com", "654321", false,  accessList));
-        return userService.findAll();
+        return this.userService.findAll();
     }
 
     @GetMapping(value = "/{id}")
