@@ -33,10 +33,10 @@ build/
 .vscode/
 ./docs
 ### Frontend ###
-node_modules
+/frontend/node_modules/
 node_modules
 *.log*
-.nuxt
+./frontend/.nuxt/**
 .nitro
 .cache
 .output
