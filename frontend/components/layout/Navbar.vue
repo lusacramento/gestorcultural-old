@@ -17,22 +17,18 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item">
 						<nuxt-link to="/" class="nav-link active" aria-current="page"
-							>Home</nuxt-link
+							>Pagina Inicial</nuxt-link
 						>
 					</li>
 				</ul>
 				<ul class="navbar-nav mb-2 mb-lg-0">
 					<li class="nav-item">
-						<a
-							class="nav-link"
-							data-bs-target="#modalEmail"
-							data-bs-toggle="modal"
-							href="#"
-							>Cadastrar</a
-						>
+						<nuxt-link to="/registrar" class="nav-link" aria-current="page">
+							Registrar
+						</nuxt-link>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Entrar</a>
+						<a class="nav-link" href="/entrar">Entrar</a>
 					</li>
 				</ul>
 			</div>
