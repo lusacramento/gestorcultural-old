@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserRepository extends MongoRepository<User, String> {
     User queryFirstByName(String name, User user);
+    User queryFirstByEmail(String email, User user);
 }

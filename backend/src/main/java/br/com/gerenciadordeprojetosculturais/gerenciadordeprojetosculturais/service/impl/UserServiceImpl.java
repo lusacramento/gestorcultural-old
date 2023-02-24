@@ -4,10 +4,15 @@ import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.exce
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.model.entity.user.User;
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.repository.UserRepository;
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.service.UserService;
+import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.service.Utils;
+import org.bson.types.ObjectId;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +43,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean existsByEmail(String email, User user) {
+        User response = this.userRepository.queryFirstByEmail(email, user);
+        if (response != null)
+            return true;
+        return false;
+    }
+
+    @Override
     @Transactional
-    public User save(User user) {
+    public User save(@NotNull User user) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        user.setPassword(Utils.generateHash(user.getPassword()));
+        user.setHash(Utils.generateHash(new ObjectId().toString()));
+        if(existsByEmail(user.getEmail(), user)){
+            throw new NotFoundException("Já existe usuário cadastrado com este email!");
+        }
         return this.userRepository.save(user);
     }
 

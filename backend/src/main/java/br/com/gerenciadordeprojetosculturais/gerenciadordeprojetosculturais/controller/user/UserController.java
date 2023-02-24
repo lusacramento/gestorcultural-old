@@ -1,13 +1,14 @@
 package br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.controller.user;
 
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.model.entity.user.User;
-import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.model.entity.user.access.Access;
 import br.com.gerenciadordeprojetosculturais.gerenciadordeprojetosculturais.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,16 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping(value="/emailcadastrado/{email}")
+    public Boolean findByEmail(@PathVariable("email") String email){
+        User user = new User();
+        user.setEmail(email);
+        return this.userService.existsByEmail(email, user);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User save(@RequestBody User user){
-        System.out.println("bang");
+    public User save(@RequestBody User user) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         return this.userService.save(user);
     }
 
@@ -50,4 +57,5 @@ public class UserController {
        this.userService.findByIdAndRemove(id);
        return ResponseEntity.noContent().build();
     }
+
 }
