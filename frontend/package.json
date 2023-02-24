@@ -11,10 +11,12 @@
     "@popperjs/core": "^2.11.6",
     "@types/bootstrap": "^5.2.6",
     "nuxt": "^3.1.0",
+    "nuxt-icon": "^0.2.11",
     "sass": "^1.57.1",
     "sass-loader": "^13.2.0"
   },
   "dependencies": {
-    "bootstrap": "^5.2.3"
+    "bootstrap": "^5.2.3",
+    "vue-toastification": "^2.0.0-rc.5"
   }
 }
