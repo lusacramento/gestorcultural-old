@@ -28,7 +28,9 @@
 						</nuxt-link>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/entrar">Entrar</a>
+						<nuxt-link to="/entrar" class="nav-link" aria-current="page">
+							Entrar
+						</nuxt-link>
 					</li>
 				</ul>
 			</div>

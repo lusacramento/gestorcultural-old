@@ -14,6 +14,7 @@ public interface UserService {
     User findByName(String name, User user);
     boolean exists(String id);
     boolean existsByEmail(String Email, User user);
+    String authentication(User user) throws UnsupportedEncodingException, NoSuchAlgorithmException;
     User save(User user) throws UnsupportedEncodingException, NoSuchAlgorithmException;
     User findByIdAndUpdate(User user);
     void findByIdAndRemove(String id);

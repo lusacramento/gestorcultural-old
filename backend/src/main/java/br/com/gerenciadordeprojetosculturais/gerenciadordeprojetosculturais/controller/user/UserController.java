@@ -38,6 +38,10 @@ public class UserController {
         user.setEmail(email);
         return this.userService.existsByEmail(email, user);
     }
+    @PostMapping(value="/authentication")
+    public String authentication(@RequestBody User user) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+            return this.userService.authentication(user);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

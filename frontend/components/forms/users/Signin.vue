@@ -16,8 +16,8 @@
 				{{ data.email.describedby }}
 			</div>
 			<div v-if="data.email.isExists">
-				<nuxt-link to="/#" class="link" aria-current="page">
-					Recuperar acesso?
+				<nuxt-link to="/registrar" class="nav-link" aria-current="page">
+					Registre agora!
 				</nuxt-link>
 			</div>
 			<div class="d-flex justify-self-end">
@@ -68,84 +68,9 @@
 					type="button"
 					class="btn btn-primary"
 					:class="{ disabled: !data.password.isValid }"
-					@click="data.pagenation.next"
+					@click="verifyCredentials()"
 				>
-					Proximo
-				</button>
-			</div>
-		</div>
-		<div class="mb-3" v-else-if="data.pagenation.value === 2">
-			<label for="input-repeat-password" class="form-label">{{
-				data.repeatPassword.label
-			}}</label>
-			<div class="d-flex">
-				<input
-					id="input-repeat-password"
-					ref="inputRepeatPassword"
-					:type="data.repeatPassword.type"
-					class="form-control"
-					v-model="data.repeatPassword.value"
-					aria-describedby="passwordRepeatHelp"
-					@keyup.enter="
-						changeNextPage(data.repeatPassword.isValid, inputRepeatPassword)
-					"
-				/>
-				<button
-					type="button"
-					class="mx-2"
-					@click="data.icons.switchPasswordvisibility"
-				>
-					<Icon :name="data.icons.current" :size="data.icons.size" />
-				</button>
-			</div>
-			<div id="passwordRepeatlHelp" class="form-text">
-				{{ data.repeatPassword.describedby }}
-			</div>
-			<div class="d-flex justify-content-end">
-				<button
-					type="button"
-					class="btn btn-secondary mx-2"
-					@click="changePreviousPage"
-				>
-					Voltar
-				</button>
-				<button
-					type="button"
-					class="btn btn-primary"
-					:class="{ disabled: !data.repeatPassword.isValid }"
-					@click="
-						changeNextPage(data.repeatPassword.isValid, inputRepeatPassword)
-					"
-				>
-					Quase lá...
-				</button>
-			</div>
-		</div>
-		<div class="mb-3 form-check" v-else="data.pagenation.value === 3">
-			<input
-				id="input-check"
-				ref="inputCheck"
-				type="checkbox"
-				class="form-check-input"
-				v-model="data.check.isOk"
-				@keyup.enter="changeNextPage(data.check.isOk)"
-			/>
-			<label class="form-check-label" for="check">{{ data.check.label }}</label>
-			<div class="d-flex justify-content-end">
-				<button
-					type="button"
-					class="btn btn-secondary mx-2"
-					@click="changePreviousPage"
-				>
-					Voltar
-				</button>
-				<button
-					type="button"
-					class="btn btn-primary"
-					:class="{ disabled: !data.check.isOk }"
-					@click="verifyCredentials"
-				>
-					Cadastrar
+					Entrar
 				</button>
 			</div>
 		</div>
@@ -161,8 +86,6 @@
 	// HTML INPUTS ELEMENT
 	let inputEmail = ref()
 	let inputPassword = ref()
-	let inputRepeatPassword = ref()
-	let inputCheck = ref()
 
 	let init = defineProps({ init: { type: Boolean } })
 
@@ -221,31 +144,9 @@
 			isValid: false,
 			placeHolder: '',
 			describedby:
-				'A senha deve conter o mínimo de oito caracteres, sem caratecteres especiais, pelo menos uma letra e um número.',
+				'A senha deve conter o mínimo de oito caracteres, pelo menos uma letra e um número.',
 
 			focus: () => inputPassword.value.focus(),
-		},
-
-		repeatPassword: {
-			label: 'Confirmar senha',
-			value: ref(''),
-			type: 'password',
-			regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-			isValid: false,
-			placeHolder: '',
-			describedby:
-				'A repetição da senha tem que ser igual ao informado na senha.',
-			focus: () => {
-				inputRepeatPassword.value.focus()
-			},
-		},
-
-		check: {
-			label: '123',
-			isOk: false,
-			focus: () => {
-				inputCheck.value.focus()
-			},
 		},
 
 		pagenation: {
@@ -259,7 +160,7 @@
 			isOk: false,
 		},
 		urls: {
-			post: 'http://localhost:8080/api/usuarios',
+			post: 'http://localhost:8080/api/usuarios/authentication',
 			isExists: 'http://localhost:8080/api/usuarios/emailcadastrado/',
 		},
 
@@ -299,15 +200,6 @@
 			? (password.isValid = true)
 			: (password.isValid = false)
 
-		const repeatPassword = newValue.repeatPassword
-		repeatPassword.regex.test(repeatPassword.value) &&
-		repeatPassword.value === password.value
-			? (repeatPassword.isValid = true)
-			: (repeatPassword.isValid = false)
-
-		const check = newValue.check
-		check.isOk ? (check.isOk = true) : (repeatPassword.isOk = false)
-
 		const dataPagination = await newValue.pagenation.value
 		switch (dataPagination) {
 			case 0:
@@ -317,12 +209,6 @@
 			case 1:
 				newValue.password.focus()
 				break
-			case 2:
-				newValue.repeatPassword.focus()
-				break
-			case 3:
-				newValue.check.focus()
-				break
 			default:
 				break
 		}
@@ -331,11 +217,12 @@
 	const changeNextPage = async (isValid, el) => {
 		if (isValid) {
 			if (data.pagenation.value === 0) {
-				if (await data.email.existsUser()) {
+				const existsUser = await data.email.existsUser()
+				if (!existsUser) {
 					const message = h('div', [
 						'O email ',
 						h('strong', data.email.value),
-						' já está cadastrado!',
+						' não está cadastrado!',
 					])
 					toast.error(message)
 					data.email.isExists = true
@@ -356,7 +243,6 @@
 		const user = {
 			email: data.email.value,
 			password: data.password.value,
-			agree: data.check.isOk,
 			isValidity: false,
 		}
 
@@ -374,15 +260,34 @@
 			body: user,
 		})
 			.then(async (response) => {
-				const message = h('div', [
-					'Usuário ',
-					h('strong', response.email),
-					' cadastrado com sucesso!',
-					h('br'),
-					h('strong', 'Verifique seu email'),
-					' para acessar sua conta.',
-				])
-				await toast.success(message, optionToastRedirect)
+				switch (response) {
+					case 'invalidPassword':
+						const messagePasswordInvalid = h('div', [
+							'Senha ',
+							h('strong', 'inválida'),
+							` !`,
+						])
+						toast.error(messagePasswordInvalid)
+						break
+
+					case 'success':
+						const messageSuccess = h('div', [
+							`Usuário `,
+							h('strong', `${data.email.value} autenticado`),
+							` com sucesso!`,
+						])
+						toast.success(messageSuccess)
+						break
+
+					default:
+						const messageError = h('div', [
+							`Ocorreu um `,
+							h('strong', `erro`),
+							`!\nContate o suporte!`,
+						])
+						toast.error(messageError)
+						break
+				}
 			})
 			.catch((error) => {
 				const message = h('div', [
@@ -394,5 +299,3 @@
 			})
 	}
 </script>
-
-<style scoped></style>
