@@ -20,7 +20,7 @@ public class Utils {
         return (hexString.toString());
     }
 
-    public boolean compareHashs(String hash1, String hash2){
+    public static boolean compareHashs(String hash1, String hash2){
         return hash1.equals(hash2);
 
     }

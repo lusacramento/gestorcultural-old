@@ -51,6 +51,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String authentication(User user) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        User response = this.userRepository.queryFirstByEmail(user.getEmail(), user);
+        if(response == null){
+            return "notFound";
+        } else {
+            user.setPassword(Utils.generateHash(user.getPassword()));
+            boolean isOk = Utils.compareHashs(user.getPassword(), response.getPassword());
+            if(isOk){
+                return "success";
+            } else return "invalidPassword";
+        }
+    }
+
+    @Override
     @Transactional
     public User save(@NotNull User user) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         user.setPassword(Utils.generateHash(user.getPassword()));
