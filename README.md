@@ -6,3 +6,4 @@ Este repositório está em **busca de programadores colaboradores** dos diferent
 ## Tecnologias usadas
 - **Backend**: Linguagem Java através do [Spring Framework](https://spring.io/);
 - **Frontend**: Linguagem [Javascript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript), através dos frameworks [Nuxt](https://nuxt.com/docs) versão 3 e [Booststrap](https://getbootstrap.com/).
+- **Base de Dados**: [Mongodb](https://www.mongodb.com/)
